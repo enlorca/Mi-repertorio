@@ -32,5 +32,28 @@ router.post("/canciones", (req, res) => {
   res.json({ message: "Canción agregada correctamente", cancion: nuevaCancion });
 });
 
+/* PUT /canciones/:id */
+router.put("/canciones/:id", (req, res) => {
+  const {id} = req.params;
+  const cancionActualizada = req.body;
+  const repertorio = getRepertorio();
+  const index = repertorio.findIndex(cancion => cancion.id == id);
+  repertorio[index] = cancionActualizada;
+  writeRepertorio(repertorio);
+  console.log(repertorio);
+  res.json({ message: "Canción actualizada correctamente", cancion: cancionActualizada });
+});
+
+
+/* DELETE /canciones/:id */
+router.delete("/canciones/:id", (req, res) => {
+  const {id} = req.params;
+  const repertorio = getRepertorio();
+  const index = repertorio.findIndex(cancion => cancion.id === id);
+  repertorio.splice(index, 1);
+  writeRepertorio(repertorio);
+  res.json({ message: "Canción eliminada correctamente" });
+});
+
 
 module.exports = router;
